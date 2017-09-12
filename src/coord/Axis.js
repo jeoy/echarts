@@ -121,7 +121,11 @@ define(function (require) {
         dataToCoord: function (data, clamp) {
             var extent = this._extent;
             var scale = this.scale;
-            data = scale.normalize(data);
+            if (data && data.length) {
+                data = (scale.normalize(data[0]) + scale.normalize(data[0] + data[1] - 1)) / 2;
+            } else {
+                data = scale.normalize(data);
+            }
 
             if (this.onBand && scale.type === 'ordinal') {
                 extent = extent.slice();

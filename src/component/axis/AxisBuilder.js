@@ -261,6 +261,9 @@ define(function (require) {
 
             var labelLayout = innerTextLayout(opt.rotation, labelRotation, opt.labelDirection);
             var categoryData = axisModel.get('data');
+            if (categoryData) {
+                ticks = removeDuplicateLabel(zrUtil.clone(categoryData));
+            }
 
             var textEls = [];
             var silent = isSilent(axisModel);
@@ -605,6 +608,40 @@ define(function (require) {
         return firstRect.intersect(nextRect);
     }
 
+    /**
+     * @static
+     */
+    function removeDuplicateLabel(label) {
+        label.push(label[label.length - 1]);
+
+        let len = 1
+        let statistArr = [];
+        label.reduce((previousValue, currentValue, ind, array) => {
+
+            if (ind === array.length - 1) {
+                statistArr.push([ind - len, len]);
+            }
+            if (currentValue === previousValue) {
+                currentValue = '';
+                len++;
+                return previousValue
+            } else {
+                statistArr.push([ind - len, len]);
+                len = 1;
+                return currentValue
+            }
+        });
+
+        let result = []
+        statistArr.forEach((item, index, array) => {
+            result.push(item);
+            for (var i = 0; i < item[1] - 1; i++) {
+                result.push(item);
+            }
+        })
+
+        return result
+    }
 
     /**
      * @static
