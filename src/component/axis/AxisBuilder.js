@@ -614,9 +614,9 @@ define(function (require) {
     function removeDuplicateLabel(label) {
         label.push(label[label.length - 1]);
 
-        let len = 1
-        let statistArr = [];
-        label.reduce((previousValue, currentValue, ind, array) => {
+        var len = 1
+        var statistArr = [];
+        label.reduce(function(previousValue, currentValue, ind, array) {
 
             if (ind === array.length - 1) {
                 statistArr.push([ind - len, len]);
@@ -632,8 +632,8 @@ define(function (require) {
             }
         });
 
-        let result = []
-        statistArr.forEach((item, index, array) => {
+        var result = []
+        statistArr.forEach(function(item, index, array) {
             result.push(item);
             for (var i = 0; i < item[1] - 1; i++) {
                 result.push(item);
